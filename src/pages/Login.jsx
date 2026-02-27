@@ -9,7 +9,7 @@ const Login = () => {
   const { isDark, toggleTheme } = useTheme();
   
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
     rememberMe: false,
   });
@@ -38,18 +38,14 @@ const Login = () => {
     setError('');
 
     // Basic validation
-    if (!formData.email || !formData.password) {
-      setError('Please enter both email and password');
+    if (!formData.username || !formData.password) {
+      setError('Please enter both username and password');
       return;
     }
 
-    if (!formData.email.includes('@')) {
-      setError('Please enter a valid email address');
-      return;
-    }
 
     setLoading(true);
-    const result = await login(formData.email, formData.password);
+    const result = await login(formData.username, formData.password);
     setLoading(false);
 
     if (result.success) {
@@ -118,22 +114,21 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                Email Address
+              <label htmlFor="username" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                Username
               </label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 text-[20px]">
-                  mail
+                  person
                 </span>
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
+                  id="username"
+                  name="username"
+                  type="text"
+                  value={formData.username}
                   onChange={handleChange}
-                  required
-                  autoComplete="email"
-                  placeholder="your.email@company.com"
+                  autoComplete="username"
+                  placeholder="Enter your username"
                   className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />
               </div>
@@ -154,8 +149,6 @@ const Login = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={handleChange}
-                  required
-                  autoComplete="current-password"
                   placeholder="••••••••"
                   className="w-full pl-12 pr-12 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />

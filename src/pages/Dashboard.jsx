@@ -25,8 +25,13 @@ const Dashboard = () => {
         apiService.getRecentActivities(),
       ]);
       
-      setStats(statsData);
-      setActivities(activitiesData);
+      setStats({
+        activeUsers: statsData.active_users || statsData.activeUsers || 0,
+        suspendedUsers: statsData.suspended_users || statsData.suspendedUsers || 0,
+        managedDevices: statsData.managed_devices || statsData.managedDevices || 0,
+        pendingUpdates: statsData.pending_updates || statsData.pendingUpdates || 0,
+      });
+      setActivities(activitiesData.items || activitiesData || []);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
       // Use default values if API fails
@@ -77,7 +82,7 @@ const Dashboard = () => {
   const summaryCards = [
     {
       title: 'Active Users',
-      value: stats.activeUsers.toLocaleString(),
+      value: (stats.activeUsers || 0).toLocaleString(),
       change: '+5.2%',
       changeType: 'positive',
       icon: 'person_check',
@@ -86,7 +91,7 @@ const Dashboard = () => {
     },
     {
       title: 'Suspended Users',
-      value: stats.suspendedUsers.toLocaleString(),
+      value: (stats.suspendedUsers || 0).toLocaleString(),
       change: '-1.4%',
       changeType: 'negative',
       icon: 'person_off',
@@ -95,7 +100,7 @@ const Dashboard = () => {
     },
     {
       title: 'Managed Devices',
-      value: stats.managedDevices.toLocaleString(),
+      value: (stats.managedDevices || 0).toLocaleString(),
       change: '+12%',
       changeType: 'positive',
       icon: 'laptop_mac',
@@ -104,7 +109,7 @@ const Dashboard = () => {
     },
     {
       title: 'Pending Updates',
-      value: stats.pendingUpdates.toLocaleString(),
+      value: (stats.pendingUpdates || 0).toLocaleString(),
       change: 'Stable',
       changeType: 'neutral',
       icon: 'system_update',
@@ -168,8 +173,8 @@ const Dashboard = () => {
     <div className="px-10 py-8 max-w-[1600px] mx-auto w-full bg-[#f7f9fb] dark:bg-background-dark min-h-screen">
       {/* Page Header */}
       <div className="mb-8">
-        <h2 className="text-[2rem] font-extrabold text-[#222b45] dark:text-text-primary mb-1 tracking-tight">Dashboard Overview</h2>
-        <p className="text-[#7b8190] dark:text-text-secondary text-base">Real-time enterprise environment status and analytics.</p>
+        <h2 className="text-[2rem] font-extrabold text-[#222b45] dark:text-dark-primary mb-1 tracking-tight">Dashboard Overview</h2>
+        <p className="text-[#7b8190] dark:text-dark-secondary text-base">Real-time enterprise environment status and analytics.</p>
       </div>
 
       {/* Summary Cards */}
@@ -177,7 +182,7 @@ const Dashboard = () => {
         {summaryCards.map((card, index) => (
           <div
             key={index}
-            className="bg-white dark:bg-slate-900 p-7 rounded-2xl border border-[#e5eaf2] dark:border-slate-800 shadow-sm flex flex-col min-h-[170px]"
+            className="bg-white dark:bg-surface-dark p-7 rounded-2xl border border-[#e5eaf2] dark:border-border-dark shadow-sm flex flex-col min-h-[170px]"
             style={{ boxShadow: '0 2px 8px 0 rgba(16,30,54,0.04)' }}
           >
             <div className="flex items-start justify-between mb-3">
@@ -196,9 +201,9 @@ const Dashboard = () => {
                 {card.change}
               </span>
             </div>
-            <p className="text-[#7b8190] dark:text-text-secondary text-[14px] font-medium mb-1">{card.title}</p>
-            <h3 className="text-[2rem] font-extrabold text-[#222b45] dark:text-text-primary leading-none">{card.value}</h3>
-            <div className="mt-4 h-2 w-full bg-[#e5eaf2] dark:bg-slate-800 rounded-full overflow-hidden">
+            <p className="text-[#7b8190] dark:text-dark-secondary text-[14px] font-medium mb-1">{card.title}</p>
+            <h3 className="text-[2rem] font-extrabold text-[#222b45] dark:text-dark-primary leading-none">{card.value}</h3>
+            <div className="mt-4 h-2 w-full bg-[#e5eaf2] dark:bg-[#3c4043] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${getProgressColorClass(card.color)}`}
                 style={{ width: `${card.progress}%` }}
@@ -211,14 +216,14 @@ const Dashboard = () => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Activity Section */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl border border-[#e5eaf2] dark:border-slate-800 overflow-hidden shadow-sm">
-          <div className="px-7 py-5 border-b border-[#e5eaf2] dark:border-slate-800 flex items-center justify-between">
-            <h4 className="font-semibold text-[18px] text-[#222b45] dark:text-text-primary">Recent Activity</h4>
+        <div className="lg:col-span-2 bg-white dark:bg-surface-dark rounded-2xl border border-[#e5eaf2] dark:border-border-dark overflow-hidden shadow-sm">
+          <div className="px-7 py-5 border-b border-[#e5eaf2] dark:border-border-dark flex items-center justify-between">
+            <h4 className="font-semibold text-[18px] text-[#222b45] dark:text-dark-primary">Recent Activity</h4>
             <button className="text-primary text-sm font-medium hover:underline transition-all">View all</button>
           </div>
-          <div className="divide-y divide-[#e5eaf2] dark:divide-slate-800">
+          <div className="divide-y divide-[#e5eaf2] dark:divide-border-dark">
             {activities.map((activity) => (
-              <div key={activity.id} className="px-7 py-4 flex items-start gap-4 hover:bg-[#f4f7fa] dark:hover:bg-slate-800/50 transition-colors">
+              <div key={activity.id} className="px-7 py-4 flex items-start gap-4 hover:bg-[#f4f7fa] dark:hover:bg-[#3c4043] transition-colors">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center ${getActivityColorClasses(
                     activity.color
@@ -227,10 +232,10 @@ const Dashboard = () => {
                   <span className="material-symbols-outlined text-[20px]">{activity.icon}</span>
                 </div>
                 <div>
-                  <p className="text-[15px] text-[#222b45] dark:text-text-primary">
+                  <p className="text-[15px] text-[#222b45] dark:text-dark-primary">
                     <span className="font-semibold">{activity.title}</span> {activity.description}
                   </p>
-                  <p className="text-[13px] text-[#7b8190] dark:text-text-secondary mt-1">
+                  <p className="text-[13px] text-[#7b8190] dark:text-dark-secondary mt-1">
                     {activity.timestamp} • by {activity.user}
                   </p>
                 </div>
@@ -241,27 +246,27 @@ const Dashboard = () => {
 
         {/* Quick Actions */}
         <div className="space-y-7">
-          <div className="bg-white dark:bg-slate-900 p-7 rounded-2xl border border-[#e5eaf2] dark:border-slate-800 shadow-sm">
-            <h4 className="font-semibold text-[18px] text-[#222b45] dark:text-text-primary mb-4">Quick Actions</h4>
+          <div className="bg-white dark:bg-surface-dark p-7 rounded-2xl border border-[#e5eaf2] dark:border-border-dark shadow-sm">
+            <h4 className="font-semibold text-[18px] text-[#222b45] dark:text-dark-primary mb-4">Quick Actions</h4>
             <div className="grid grid-cols-2 gap-4">
               {quickActions.map((action, index) => (
                 <button
                   key={index}
                   onClick={action.action}
-                  className="flex flex-col items-center justify-center p-5 rounded-xl border border-[#e5eaf2] dark:border-slate-800 hover:bg-[#f4f7fa] dark:hover:bg-sidebar-active hover:border-primary/30 transition-all group bg-white dark:bg-slate-900"
+                  className="flex flex-col items-center justify-center p-5 rounded-xl border border-[#e5eaf2] dark:border-border-dark hover:bg-[#f4f7fa] dark:hover:bg-[#3c4043] hover:border-primary/30 transition-all group bg-white dark:bg-surface-dark"
                 >
                   <span className="material-symbols-outlined text-primary mb-2 text-[26px] group-hover:scale-110 transition-transform">
                     {action.icon}
                   </span>
-                  <span className="text-[14px] font-medium text-[#222b45] dark:text-text-primary">{action.label}</span>
+                  <span className="text-[14px] font-medium text-[#222b45] dark:text-dark-primary">{action.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="bg-[#eaf3fc] dark:bg-primary/10 rounded-2xl p-7 border border-primary/20">
+          <div className="bg-[#eaf3fc] dark:bg-primary/20 rounded-2xl p-7 border border-primary/20 dark:border-primary/30">
             <h4 className="font-semibold text-[18px] text-primary mb-2">Enterprise Insights</h4>
-            <p className="text-[14px] text-[#3b4863] dark:text-slate-400 mb-4 leading-relaxed">
+            <p className="text-[14px] text-[#3b4863] dark:text-dark-secondary mb-4 leading-relaxed">
               You have 12 devices running an outdated version of ChromeOS. We recommend scheduling an update for the weekend.
             </p>
             <button className="bg-primary text-white text-[14px] font-semibold py-2.5 px-6 rounded-full hover:bg-primary-hover transition-colors shadow-sm">

@@ -21,10 +21,13 @@ const AddTeamModal = ({ isOpen, onClose, onSuccess }) => {
     try {
       setLoadingDepartments(true);
       const data = await apiService.getDepartments();
-      setDepartments(data);
+      // Handle paginated response from ambient-backend
+      const deptArray = data?.result?.items || data?.items || data || [];
+      setDepartments(Array.isArray(deptArray) ? deptArray : []);
     } catch (err) {
       console.error('Error loading departments:', err);
       setError('Failed to load departments. Please try again.');
+      setDepartments([]); // Ensure departments is always an array
     } finally {
       setLoadingDepartments(false);
     }

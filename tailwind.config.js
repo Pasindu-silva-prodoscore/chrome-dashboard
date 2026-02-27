@@ -14,20 +14,26 @@ export default {
         
         // Backgrounds
         "background-light": "#f8f9fa",
-        "background-dark": "#111821",
+        "background-dark": "#1f1f1f",
         "surface-light": "#ffffff",
-        "surface-dark": "#1e1e1e",
-        "search-bg": "#f1f3f4",
+        "surface-dark": "#292929",
+        "search-bg-light": "#f1f3f4",
+        "search-bg-dark": "#3c4043",
         
         // Borders
         "border-light": "#dadce0",
         "border-subtle": "#eeeeee",
-        "border-dark": "#2d2d2d",
+        "border-dark": "#3c4043",
         
-        // Text
+        // Text - Light Mode
         "text-primary": "#202124",
         "text-secondary": "#5f6368",
         "text-muted": "#70757a",
+        
+        // Text - Dark Mode (Chrome-inspired)
+        "text-dark-primary": "#e8eaed",
+        "text-dark-secondary": "#9aa0a6",
+        "text-dark-muted": "#80868b",
         
         // States
         "sidebar-active": "#e8f0fe",

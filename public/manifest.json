@@ -1,6 +1,6 @@
 {
-  "name": "Chrome Dashboard",
-  "short_name": "ChromeAdmin",
+  "name": "AMBIENT",
+  "short_name": "AMBIENT",
   "description": "Enterprise management dashboard application",
   "start_url": "/",
   "display": "standalone",

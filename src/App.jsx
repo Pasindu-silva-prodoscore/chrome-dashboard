@@ -12,6 +12,7 @@ import Logs from './pages/Logs';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import UserDetail from './pages/UserDetail';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="insights" element={<Insights />} />
               <Route path="logs" element={<Logs />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="users/:userId" element={<UserDetail />} />
             </Route>
           </Routes>
         </BrowserRouter>

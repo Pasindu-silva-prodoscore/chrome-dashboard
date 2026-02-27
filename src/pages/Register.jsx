@@ -39,41 +39,7 @@ const Register = () => {
   };
 
   const validateForm = () => {
-    // Check required fields
-    if (!formData.name || !formData.domain_email || !formData.admin_email || !formData.password || !formData.confirmPassword) {
-      setError('All fields are required');
-      return false;
-    }
-
-    // Validate domain name length
-    if (formData.name.length < 1 || formData.name.length > 255) {
-      setError('Domain name must be between 1 and 255 characters');
-      return false;
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.domain_email)) {
-      setError('Please enter a valid domain email address');
-      return false;
-    }
-    if (!emailRegex.test(formData.admin_email)) {
-      setError('Please enter a valid admin email address');
-      return false;
-    }
-
-    // Validate password length
-    if (formData.password.length < 8) {
-      setError('Password must be at least 8 characters long');
-      return false;
-    }
-
-    // Check password match
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return false;
-    }
-
+    // Validation removed as per requirements
     return true;
   };
 
@@ -206,8 +172,6 @@ const Register = () => {
                   type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  required
-                  maxLength={255}
                   placeholder="Your Company Name"
                   className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />
@@ -229,7 +193,6 @@ const Register = () => {
                   type="email"
                   value={formData.domain_email}
                   onChange={handleChange}
-                  required
                   placeholder="contact@company.com"
                   className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />
@@ -251,7 +214,6 @@ const Register = () => {
                   type="email"
                   value={formData.admin_email}
                   onChange={handleChange}
-                  required
                   placeholder="admin@company.com"
                   className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />
@@ -273,8 +235,6 @@ const Register = () => {
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={handleChange}
-                  required
-                  minLength={8}
                   placeholder="••••••••"
                   className="w-full pl-12 pr-12 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />
@@ -288,9 +248,6 @@ const Register = () => {
                   </span>
                 </button>
               </div>
-              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                Must be at least 8 characters long
-              </p>
             </div>
 
             {/* Confirm Password Input */}
@@ -308,7 +265,6 @@ const Register = () => {
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  required
                   placeholder="••••••••"
                   className="w-full pl-12 pr-12 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 />

@@ -7,6 +7,7 @@ const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true', // Bypass ngrok browser warning
   },
 });
 
@@ -85,9 +86,13 @@ api.interceptors.response.use(
       }
 
       try {
-        const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, {
+        const response = await axios.post(`${API_BASE_URL}/api/app/auth/refresh`, {
           grant_type: 'refresh_token',
           refresh_token: refreshToken
+        }, {
+          headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
         });
 
         const { access_token, refresh_token } = response.data;
@@ -114,12 +119,12 @@ api.interceptors.response.use(
 export const apiService = {
   // Authentication
   register: async (data) => {
-    const response = await api.post('/api/auth/register', data);
+    const response = await api.post('/api/app/auth/register', data);
     return response.data;
   },
 
   login: async (credentials) => {
-    const response = await api.post('/api/auth/login', {
+    const response = await api.post('/api/app/auth/login', {
       username: credentials.email || credentials.username,
       password: credentials.password,
       grant_type: 'password'
@@ -134,7 +139,7 @@ export const apiService = {
     if (!refreshToken) {
       throw new Error('No refresh token available');
     }
-    const response = await api.post('/api/auth/refresh', {
+    const response = await api.post('/api/app/auth/refresh', {
       grant_type: 'refresh_token',
       refresh_token: refreshToken
     });
@@ -145,204 +150,225 @@ export const apiService = {
 
   logout: async () => {
     try {
-      await api.post('/api/auth/logout');
+      await api.post('/api/app/auth/logout');
     } finally {
       clearTokens();
     }
   },
 
   changePassword: async (data) => {
-    const response = await api.post('/api/auth/change-password', data);
+    const response = await api.post('/api/app/auth/change-password', data);
     return response.data;
   },
 
   getCurrentUser: async () => {
-    const response = await api.get('/api/domains');
+    const response = await api.get('/api/app/domains');
     return response.data;
   },
 
   // Domains
   getDomain: async () => {
-    const response = await api.get('/api/domains');
+    const response = await api.get('/api/app/domains');
     return response.data;
   },
 
   updateDomain: async (data) => {
-    const response = await api.put('/api/domains', data);
+    const response = await api.put('/api/app/domains', data);
     return response.data;
   },
 
   deleteDomain: async () => {
-    const response = await api.delete('/api/domains');
+    const response = await api.delete('/api/app/domains');
     return response.data;
   },
 
   // Users
   getUsers: async (params = {}) => {
-    const response = await api.get('/api/users', { params });
+    const response = await api.get('/api/app/users', { params });
     return response.data;
   },
 
   getUser: async (id) => {
-    const response = await api.get(`/api/users/${id}`);
+    const response = await api.get(`/api/app/users/${id}`);
     return response.data;
   },
 
   createUser: async (data) => {
-    const response = await api.post('/api/users', data);
+    const response = await api.post('/api/app/users', data);
     return response.data;
   },
 
   updateUser: async (id, data) => {
-    const response = await api.put(`/api/users/${id}`, data);
+    const response = await api.put(`/api/app/users/${id}`, data);
     return response.data;
   },
 
   deleteUser: async (id) => {
-    const response = await api.delete(`/api/users/${id}`);
+    const response = await api.delete(`/api/app/users/${id}`);
     return response.data;
   },
 
   importUsers: async (users) => {
-    const response = await api.post('/api/users/import', { users });
+    const response = await api.post('/api/app/users/import', { users });
     return response.data;
   },
 
   assignUser: async (userId, data) => {
-    const response = await api.post(`/api/users/${userId}/assign`, data);
+    const response = await api.post(`/api/app/users/${userId}/assign`, data);
     return response.data;
   },
 
   // Departments
   getDepartments: async (params = {}) => {
-    const response = await api.get('/api/departments', { params });
+    const response = await api.get('/api/app/departments', { params });
     return response.data;
   },
 
   getDepartment: async (id) => {
-    const response = await api.get(`/api/departments/${id}`);
+    const response = await api.get(`/api/app/departments/${id}`);
     return response.data;
   },
 
   createDepartment: async (data) => {
-    const response = await api.post('/api/departments', data);
+    const response = await api.post('/api/app/departments', data);
     return response.data;
   },
 
   updateDepartment: async (id, data) => {
-    const response = await api.put(`/api/departments/${id}`, data);
+    const response = await api.put(`/api/app/departments/${id}`, data);
     return response.data;
   },
 
   deleteDepartment: async (id) => {
-    const response = await api.delete(`/api/departments/${id}`);
+    const response = await api.delete(`/api/app/departments/${id}`);
     return response.data;
   },
 
   // Teams
   getTeams: async (params = {}) => {
-    const response = await api.get('/api/teams', { params });
+    const response = await api.get('/api/app/teams', { params });
     return response.data;
   },
 
   getTeam: async (id) => {
-    const response = await api.get(`/api/teams/${id}`);
+    const response = await api.get(`/api/app/teams/${id}`);
     return response.data;
   },
 
   createTeam: async (data) => {
-    const response = await api.post('/api/teams', data);
+    const response = await api.post('/api/app/teams', data);
     return response.data;
   },
 
   updateTeam: async (id, data) => {
-    const response = await api.put(`/api/teams/${id}`, data);
+    const response = await api.put(`/api/app/teams/${id}`, data);
     return response.data;
   },
 
   deleteTeam: async (id) => {
-    const response = await api.delete(`/api/teams/${id}`);
+    const response = await api.delete(`/api/app/teams/${id}`);
     return response.data;
   },
 
   // Insights
   getInsights: async (params = {}) => {
-    const response = await api.get('/api/insights', { params });
+    const response = await api.get('/api/ai/user-insights', { params });
     return response.data;
   },
-
   getInsight: async (id) => {
-    const response = await api.get(`/api/insights/${id}`);
+    const response = await api.get(`/api/ai/user-insights/${id}`);
     return response.data;
   },
-
-  getInsightsAggregations: async (params = {}) => {
-    const response = await api.get('/api/insights/aggregations', { params });
+  getInsightsCount: async (params = {}) => {
+    const response = await api.get('/api/ai/user-insights/count', { params });
     return response.data;
+  },
+  getInsightsAggregations: async (params = {}) => {
+    // NOTE: Insights endpoint not available in ambient-backend
+    return { total_users: 0, active_users: 0, departments: 0, teams: 0 };
   },
 
   getInsightsByUser: async (userId, params = {}) => {
-    const response = await api.get(`/api/insights/users/${userId}`, { params });
-    return response.data;
+    // NOTE: Insights endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   getInsightsByDepartment: async (deptId, params = {}) => {
-    const response = await api.get(`/api/insights/departments/${deptId}`, { params });
-    return response.data;
+    // NOTE: Insights endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   getInsightsByTeam: async (teamId, params = {}) => {
-    const response = await api.get(`/api/insights/teams/${teamId}`, { params });
-    return response.data;
+    // NOTE: Insights endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   // Logs
   getLogs: async (params = {}) => {
-    const response = await api.get('/api/logs', { params });
-    return response.data;
+    // NOTE: Logs endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
-
-  getLog: async (id) => {
-    const response = await api.get(`/api/logs/${id}`);
+  
+  // Google Reports - Activities
+  getActivities: async (params) => {
+    const response = await api.get('/api/google/reports/activities', { params });
     return response.data;
   },
 
   getLogsByUser: async (userId, params = {}) => {
-    const response = await api.get(`/api/logs/users/${userId}`, { params });
-    return response.data;
+    // NOTE: Logs endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   getLogsByDepartment: async (deptId, params = {}) => {
-    const response = await api.get(`/api/logs/departments/${deptId}`, { params });
-    return response.data;
+    // NOTE: Logs endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   getLogsByTeam: async (teamId, params = {}) => {
-    const response = await api.get(`/api/logs/teams/${teamId}`, { params });
-    return response.data;
+    // NOTE: Logs endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   // Dashboard - backward compatibility
   getDashboardStats: async () => {
-    const response = await api.get('/api/insights/aggregations');
-    return response.data;
+    try {
+      // Fetch real counts from backend
+      const [usersCount, departmentsCount, teamsCount] = await Promise.all([
+        api.get('/api/app/users/count'),
+        api.get('/api/app/departments/count'),
+        api.get('/api/app/teams/count'),
+      ]);
+
+      return {
+        total_users: usersCount.data?.result || 0,
+        active_users: usersCount.data?.result || 0, // Backend doesn't distinguish, use same
+        departments: departmentsCount.data?.result || 0,
+        teams: teamsCount.data?.result || 0,
+        suspended_users: 0, // Not available in backend
+        managed_devices: 0, // Not available in backend
+        pending_updates: 0, // Not available in backend
+      };
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+      // Return zeros on error
+      return { total_users: 0, active_users: 0, departments: 0, teams: 0, suspended_users: 0, managed_devices: 0, pending_updates: 0 };
+    }
   },
 
   getRecentActivities: async () => {
-    const response = await api.get('/api/logs', { 
-      params: { page: 1, size: 10, sort_by: 'timestamp', order: 'desc' }
-    });
-    return response.data;
+    // NOTE: Logs endpoint not available in ambient-backend
+    return { items: [], total: 0 };
   },
 
   // Settings - backward compatibility
   getSettings: async () => {
-    const response = await api.get('/api/domains');
+    const response = await api.get('/api/app/domains');
     return response.data;
   },
 
   updateSettings: async (data) => {
-    const response = await api.put('/api/domains', data);
+    const response = await api.put('/api/app/domains', data);
     return response.data;
   },
 };

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chrome-dashboard-v2'; // Increment version to force cache refresh
+const CACHE_NAME = 'ambient-v1'; // Increment version to force cache refresh
 const urlsToCache = [
   '/',
   '/index.html',
