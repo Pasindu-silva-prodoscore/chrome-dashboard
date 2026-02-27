@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import apiService from '../services/api';
+import { apiService } from '../services/api';
 
 export default function UserDetail() {
   const { userId } = useParams();
@@ -44,7 +44,7 @@ export default function UserDetail() {
     const apiFilters = {};
     
     // User filter (always applied)
-    apiFilters.user_id = userId;
+    apiFilters.user_id = user?.user_id;
     
     // Risk level filter
     if (filters.riskLevels.length > 0) {
@@ -96,25 +96,25 @@ export default function UserDetail() {
     try {
       // Count critical insights
       const criticalData = await apiService.getInsightsCount({
-        filters: JSON.stringify({ user_id: userId, risk_level: 'critical' }),
+        filters: JSON.stringify({ user_id: user.user_id, risk_level: 'critical' }),
         filters_type: 'json'
       });
       
       // Count high insights
       const highData = await apiService.getInsightsCount({
-        filters: JSON.stringify({ user_id: userId, risk_level: 'high' }),
+        filters: JSON.stringify({ user_id: user.user_id, risk_level: 'high' }),
         filters_type: 'json'
       });
       
       // Count medium insights
       const mediumData = await apiService.getInsightsCount({
-        filters: JSON.stringify({ user_id: userId, risk_level: 'medium' }),
+        filters: JSON.stringify({ user_id: user.user_id, risk_level: 'medium' }),
         filters_type: 'json'
       });
       
       // Count low insights
       const lowData = await apiService.getInsightsCount({
-        filters: JSON.stringify({ user_id: userId, risk_level: 'low' }),
+        filters: JSON.stringify({ user_id: user.user_id, risk_level: 'low' }),
         filters_type: 'json'
       });
       
@@ -167,12 +167,14 @@ export default function UserDetail() {
   // Load all data on mount and when filters/page change
   useEffect(() => {
     loadUser();
-    loadCriticalityCounts();
   }, [userId]);
   
   useEffect(() => {
-    loadInsights();
-  }, [userId, currentPage, filters]);
+    if (user?.user_id) {
+      loadCriticalityCounts();
+      loadInsights();
+    }
+  }, [user?.user_id, currentPage, filters]);
   
   // Filter toggle functions
   const toggleRiskLevel = (level) => {

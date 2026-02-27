@@ -10,6 +10,7 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imageErrors, setImageErrors] = useState({});
 
   useEffect(() => {
     loadUsers();
@@ -52,6 +53,10 @@ const Users = () => {
   const handleUserClick = (userId) => {
     navigate(`/users/${userId}`);
   };
+  const handleImageError = (userId) => {
+    setImageErrors(prev => ({ ...prev, [userId]: true }));
+  };
+
 
   return (
     <div className="p-8 max-w-[1600px] mx-auto w-full bg-background-light dark:bg-background-dark min-h-screen">
@@ -134,12 +139,21 @@ const Users = () => {
                   <tr key={user.id} onClick={(e) => { if (!e.target.closest('button')) handleUserClick(user.id); }} className="hover:bg-gray-50 dark:hover:bg-[#3c4043] transition-colors cursor-pointer">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-semibold text-sm">
-                          {(user.name || 'Unknown').split(' ').map(n => n[0]).join('')}
-                        </div>
+                        {user.thumbnail_photo_url && !imageErrors[user.id] ? (
+                          <img 
+                            src={user.thumbnail_photo_url} 
+                            alt={user.name || 'User'}
+                            className="w-10 h-10 rounded-full object-cover border border-primary/20"
+                            onError={() => handleImageError(user.id)}
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-semibold text-sm">
+                            {(user.name || 'Unknown').split(' ').map(n => n[0]).join('')}
+                          </div>
+                        )}
                         <div className="ml-4">
                           <div className="text-sm font-medium text-text-primary dark:text-dark-primary">{user.name || 'Unknown User'}</div>
-                          <div className="text-sm text-text-secondary dark:text-dark-secondary">{user.email || 'No email'}</div>
+                          <div className="text-sm text-text-secondary dark:text-dark-secondary">{user.primary_email || 'No email'}</div>
                         </div>
                       </div>
                     </td>
