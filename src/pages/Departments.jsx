@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/api';
 import AddDepartmentModal from '../components/AddDepartmentModal';
 
 const Departments = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -55,15 +57,13 @@ const Departments = () => {
           departments.map((dept) => (
             <div
               key={dept.id}
-              className="bg-surface-light dark:bg-surface-dark p-6 rounded-card border border-border-light dark:border-border-dark hover:border-primary/30 transition-all group"
+              onClick={() => navigate(`/departments/${dept.id}`)}
+              className="bg-surface-light dark:bg-surface-dark p-6 rounded-card border border-border-light dark:border-border-dark hover:border-primary/30 transition-all group cursor-pointer"
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl text-primary flex items-center justify-center">
                   <span className="material-symbols-outlined text-[20px]">corporate_fare</span>
                 </div>
-                <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[#3c4043] text-text-secondary dark:text-dark-secondary transition-colors">
-                  <span className="material-symbols-outlined text-[20px]">more_vert</span>
-                </button>
               </div>
               
               <h3 className="text-[18px] font-semibold text-text-primary dark:text-dark-primary mb-1">{dept.name}</h3>

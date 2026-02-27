@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/api';
 import AddTeamModal from '../components/AddTeamModal';
 
 const Teams = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const Teams = () => {
                 </tr>
               ) : (
                 teams.map((team, index) => (
-                  <tr key={`${team.id}-${index}`} className="hover:bg-gray-50 dark:hover:bg-[#3c4043] transition-colors">
+                  <tr key={`${team.id}-${index}`} onClick={() => navigate(`/teams/${team.id}`)} className="hover:bg-gray-50 dark:hover:bg-[#3c4043] transition-colors cursor-pointer">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/20 rounded-xl text-indigo-600 flex items-center justify-center mr-3">
@@ -108,8 +110,6 @@ const Teams = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-primary hover:text-primary-hover mr-4 font-medium transition-colors">View</button>
-                      <button className="text-text-secondary dark:text-dark-secondary hover:text-text-primary dark:hover:text-dark-primary font-medium transition-colors">Edit</button>
                     </td>
                   </tr>
                 ))

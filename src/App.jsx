@@ -13,6 +13,8 @@ import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserDetail from './pages/UserDetail';
+import TeamDetail from './pages/TeamDetail';
+import DepartmentDetail from './pages/DepartmentDetail';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
               <Route path="logs" element={<Logs />} />
               <Route path="settings" element={<Settings />} />
               <Route path="users/:userId" element={<UserDetail />} />
+              <Route path="teams/:teamId" element={<TeamDetail />} />
+              <Route path="departments/:departmentId" element={<DepartmentDetail />} />
             </Route>
           </Routes>
         </BrowserRouter>

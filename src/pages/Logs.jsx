@@ -369,29 +369,29 @@ const Logs = () => {
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-6 flex-1 min-w-0">
                             {/* Event Type */}
-                            <div className="flex-shrink-0 w-24">
-                              <span className="text-xs font-medium text-text-muted dark:text-dark-muted uppercase tracking-wide">
+                            <div className="flex-shrink-0 w-40">
+                              <span className="text-xs font-medium text-text-muted dark:text-dark-muted uppercase tracking-wide break-words">
                                 {eventType}
                               </span>
                             </div>
                             
                             {/* Event Name */}
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 max-w-xs">
                               <span className="text-sm font-medium text-text-primary dark:text-dark-primary truncate block">
                                 {eventName}
                               </span>
                             </div>
                             
                             {/* User */}
-                            <div className="flex-shrink-0 w-48">
+                            <div className="flex-shrink-0 w-52">
                               <span className="text-sm text-text-secondary dark:text-dark-secondary truncate block">
                                 {actorEmail}
                               </span>
                             </div>
                             
                             {/* App */}
-                            <div className="flex-shrink-0 w-28">
-                              <span className="text-sm text-text-secondary dark:text-dark-secondary capitalize">
+                            <div className="flex-shrink-0 w-36">
+                              <span className="text-sm text-text-secondary dark:text-dark-secondary capitalize truncate block">
                                 {appName}
                               </span>
                             </div>

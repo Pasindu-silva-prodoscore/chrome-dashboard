@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../services/api';
 import AddUserModal from '../components/AddUserModal';
+import AssignTeamModal from '../components/AssignTeamModal';
 
 const Users = () => {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ const Users = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
+  const [isAssignTeamModalOpen, setIsAssignTeamModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     loadUsers();
@@ -56,6 +59,12 @@ const Users = () => {
   const handleImageError = (userId) => {
     setImageErrors(prev => ({ ...prev, [userId]: true }));
   };
+  const handleAssignTeam = (user, e) => {
+    e.stopPropagation(); // Prevent row click
+    setSelectedUser(user);
+    setIsAssignTeamModalOpen(true);
+  };
+
 
 
   return (
@@ -175,8 +184,7 @@ const Users = () => {
                       {user.lastLogin}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-primary hover:text-primary-hover mr-4 font-medium transition-colors">Edit</button>
-                      <button className="text-error hover:text-red-700 font-medium transition-colors">Delete</button>
+                      <button onClick={(e) => handleAssignTeam(user, e)} className="text-primary hover:text-primary-hover font-medium transition-colors">Assign Team</button>
                     </td>
                   </tr>
                 ))
@@ -191,6 +199,14 @@ const Users = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={loadUsers}
+      />
+
+      {/* Assign Team Modal */}
+      <AssignTeamModal
+        isOpen={isAssignTeamModalOpen}
+        onClose={() => setIsAssignTeamModalOpen(false)}
+        onSuccess={loadUsers}
+        user={selectedUser}
       />
     </div>
   );

@@ -218,6 +218,11 @@ export const apiService = {
     return response.data;
   },
 
+  assignUserToTeam: async (userId, teamId) => {
+    const response = await api.put(`/api/app/users/${userId}/team`, { team_id: teamId });
+    return response.data;
+  },
+
   // Departments
   getDepartments: async (params = {}) => {
     const response = await api.get('/api/app/departments', { params });
