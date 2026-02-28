@@ -348,6 +348,52 @@ const Logs = () => {
             </div>
           ) : (
             <div className="bg-surface-light dark:bg-slate-900 rounded-card border border-border-light dark:border-slate-800 overflow-hidden">
+              {/* Table Header */}
+              <div className="bg-gray-100 dark:bg-slate-800 border-b border-border-subtle dark:border-slate-700 px-4 py-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-6 flex-1 min-w-0">
+                    {/* Event Type Header */}
+                    <div className="flex-shrink-0 w-40">
+                      <span className="text-xs font-semibold text-text-primary dark:text-dark-primary uppercase tracking-wider">
+                        Event Type
+                      </span>
+                    </div>
+                    
+                    {/* Event Name Header */}
+                    <div className="flex-1 min-w-0 max-w-xs">
+                      <span className="text-xs font-semibold text-text-primary dark:text-dark-primary uppercase tracking-wider">
+                        Event Name
+                      </span>
+                    </div>
+                    
+                    {/* User Header */}
+                    <div className="flex-shrink-0 w-52">
+                      <span className="text-xs font-semibold text-text-primary dark:text-dark-primary uppercase tracking-wider">
+                        User
+                      </span>
+                    </div>
+                    
+                    {/* App Header */}
+                    <div className="flex-shrink-0 w-36">
+                      <span className="text-xs font-semibold text-text-primary dark:text-dark-primary uppercase tracking-wider">
+                        Application
+                      </span>
+                    </div>
+                    
+                    {/* DateTime Header */}
+                    <div className="flex-shrink-0 w-44">
+                      <span className="text-xs font-semibold text-text-primary dark:text-dark-primary uppercase tracking-wider">
+                        Date & Time
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Expand Icon Placeholder */}
+                  <div className="flex-shrink-0 w-5">
+                  </div>
+                </div>
+              </div>
+              
               <div className="divide-y divide-border-subtle dark:divide-slate-800">
                 {activities.map((activity, index) => {
                   const event = activity.events?.[0];

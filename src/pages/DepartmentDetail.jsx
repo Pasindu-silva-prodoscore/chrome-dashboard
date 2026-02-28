@@ -240,6 +240,15 @@ export default function DepartmentDetail() {
       minute: '2-digit'
     });
   };
+  // Format event type: replace underscores with spaces and capitalize
+  const formatEventType = (eventType) => {
+    if (!eventType) return 'N/A';
+    return eventType
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+  
   
   // Toggle insight expansion
   const toggleInsightExpansion = (insightId) => {
@@ -552,7 +561,7 @@ export default function DepartmentDetail() {
         ) : (
           <div className="divide-y divide-border-subtle dark:divide-border-dark">
             {insights.map((insight) => (
-              <div key={insight.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#3c4043] transition-colors">
+              <div key={insight.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#3c4043] transition-colors cursor-pointer" onClick={() => toggleInsightExpansion(insight.id)}>
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
@@ -566,20 +575,17 @@ export default function DepartmentDetail() {
                       )}
                     </div>
                     <h4 className="text-base font-semibold text-text-primary dark:text-dark-primary mb-1">
-                      {insight.insight_title || 'Untitled Insight'}
+                      {insight.title || 'Untitled Insight'}
                     </h4>
                     <p className="text-sm text-text-secondary dark:text-dark-secondary line-clamp-2">
-                      {insight.insight_summary || 'No summary available'}
+                      {insight.summary || 'No summary available'}
                     </p>
                   </div>
-                  <button 
-                    onClick={() => toggleInsightExpansion(insight.id)}
-                    className="ml-4 text-primary hover:text-primary-hover transition-colors"
-                  >
+                  <div className="ml-4 text-primary">
                     <span className="material-symbols-outlined text-[20px]">
                       {expandedInsightId === insight.id ? 'expand_less' : 'expand_more'}
                     </span>
-                  </button>
+                  </div>
                 </div>
                 
                 {expandedInsightId === insight.id && (
@@ -587,7 +593,7 @@ export default function DepartmentDetail() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 text-sm">
                       <div>
                         <p className="text-text-muted dark:text-dark-muted text-xs mb-1">Event Type</p>
-                        <p className="text-text-primary dark:text-dark-primary font-medium">{insight.event_type || 'N/A'}</p>
+                        <p className="text-text-primary dark:text-dark-primary font-medium">{formatEventType(insight.event_type)}</p>
                       </div>
                       <div>
                         <p className="text-text-muted dark:text-dark-muted text-xs mb-1">App</p>
@@ -602,11 +608,38 @@ export default function DepartmentDetail() {
                         <p className="text-text-primary dark:text-dark-primary font-medium">{insight.confidence_score ? `${(insight.confidence_score * 100).toFixed(0)}%` : 'N/A'}</p>
                       </div>
                     </div>
-                    {insight.insight_details && (
-                      <div className="bg-gray-50 dark:bg-[#2d2e30] rounded-lg p-3">
-                        <p className="text-sm text-text-primary dark:text-dark-primary whitespace-pre-wrap">
-                          {insight.insight_details}
+                    {insight.summary && (
+                      <div className="bg-gray-50 dark:bg-[#2d2e30] rounded-lg p-3 mb-3">
+                        <p className="text-sm font-semibold text-text-primary dark:text-dark-primary mb-2">Summary</p>
+                        <p className="text-sm text-text-secondary dark:text-dark-secondary whitespace-pre-wrap">
+                          {insight.summary}
                         </p>
+                      </div>
+                    )}
+                    {insight.key_findings && insight.key_findings.length > 0 && (
+                      <div className="bg-gray-50 dark:bg-[#2d2e30] rounded-lg p-3 mb-3">
+                        <p className="text-sm font-semibold text-text-primary dark:text-dark-primary mb-2">Key Findings</p>
+                        <ul className="space-y-1">
+                          {insight.key_findings.map((finding, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary dark:text-dark-secondary">
+                              <span className="material-symbols-outlined text-green-600 text-[16px] mt-0.5">check_circle</span>
+                              <span>{finding}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {insight.recommendations && insight.recommendations.length > 0 && (
+                      <div className="bg-gray-50 dark:bg-[#2d2e30] rounded-lg p-3">
+                        <p className="text-sm font-semibold text-text-primary dark:text-dark-primary mb-2">Recommendations</p>
+                        <ul className="space-y-1">
+                          {insight.recommendations.map((rec, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary dark:text-dark-secondary">
+                              <span className="material-symbols-outlined text-blue-600 text-[16px] mt-0.5">lightbulb</span>
+                              <span>{rec}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     )}
                   </div>

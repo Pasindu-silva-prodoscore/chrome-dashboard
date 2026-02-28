@@ -24,6 +24,15 @@ const Insights = () => {
     categories: [],
     dateRange: { start: '', end: '' }
   });
+  // Format event type: replace underscores with spaces and capitalize
+  const formatEventType = (eventType) => {
+    if (!eventType) return 'N/A';
+    return eventType
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+  
   
   // Load insights when filters or page changes
   useEffect(() => {
@@ -266,7 +275,7 @@ const Insights = () => {
                       className="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-2 focus:ring-primary/20"
                     />
                     <span className="text-sm text-text-secondary dark:text-dark-secondary">
-                      {type}
+                      {formatEventType(type)}
                     </span>
                   </label>
                 ))
@@ -488,7 +497,7 @@ const Insights = () => {
                           {insight.event_type && (
                             <div className="flex items-center gap-1">
                               <span className="material-symbols-outlined text-[16px]">event</span>
-                              <span>{insight.event_type}</span>
+                              <span>{formatEventType(insight.event_type)}</span>
                             </div>
                           )}
                           {insight.app_name && (
@@ -610,7 +619,7 @@ const Insights = () => {
                               <div>
                                 <p className="text-text-muted dark:text-dark-muted mb-1">Event Type</p>
                                 <p className="text-text-primary dark:text-dark-primary font-medium">
-                                  {insight.event_type}
+                                  {formatEventType(insight.event_type)}
                                 </p>
                               </div>
                             )}

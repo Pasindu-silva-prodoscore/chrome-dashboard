@@ -248,6 +248,15 @@ export default function UserDetail() {
     };
     return colors[level] || colors.low;
   };
+  // Format event type: replace underscores with spaces and capitalize
+  const formatEventType = (eventType) => {
+    if (!eventType) return 'N/A';
+    return eventType
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+  
   
   const activeFilterCount = 
     filters.riskLevels.length + 
@@ -654,7 +663,7 @@ export default function UserDetail() {
                         </div>
                         <div className="flex items-center gap-1">
                           <span className="material-symbols-outlined text-sm">event</span>
-                          <span>{insight.event_type}</span>
+                          <span>{formatEventType(insight.event_type)}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <span className="material-symbols-outlined text-sm">apps</span>
@@ -736,7 +745,7 @@ export default function UserDetail() {
                       </div>
                       <div>
                         <p className="text-xs text-text-secondary mb-1">Event Type</p>
-                        <p className="text-sm text-text-primary">{insight.event_type}</p>
+                        <p className="text-sm text-text-primary">{formatEventType(insight.event_type)}</p>
                       </div>
                       <div>
                         <p className="text-xs text-text-secondary mb-1">Application</p>
